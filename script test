@@ -1,1 +1,146 @@
-print("clam on top")
+local Rayfield = loadstring(game:HttpGet('https://sirius.menu/rayfield'))()
+
+local Window = Rayfield:CreateWindow({
+    Name = "Test script sim 1",
+    LoadingTitle = "Saiko hub",
+    LoadingSubtitle = "by Saeko",
+    ConfigurationSaving = {
+       Enabled = False,
+       FolderName = nil, -- Create a custom folder for your hub/game
+       FileName = "test example script hub "
+    },
+    Discord = {
+       Enabled = true,
+       Invite = "https://discord.gg/R6cPXmuU", -- The Discord invite code, do not include discord.gg/. E.g. discord.gg/ABCD would be ABCD
+       RememberJoins = true -- Set this to false to make them join the discord every time they load it up
+    },
+    KeySystem = true, -- Set this to true to use our key system
+    KeySettings = {
+       Title = "Test sim keys",
+       Subtitle = "Link in discord server",
+       Note = "Join server from misc tab",
+       FileName = "Examplescripthub", -- It is recommended to use something unique as other scripts using Rayfield may overwrite your key file
+       SaveKey = false, -- The user's key will be saved, but if you change the key, they will be unable to use your script
+       GrabKeyFromSite = true, -- If this is true, set Key below to the RAW site you would like Rayfield to get the key from
+       Key = {"https://pastebin.com/raw/62d0gXCn"} -- List of keys that will be accepted by the system, can be RAW file links (pastebin, github etc) or simple strings ("hello","key22")
+    }
+ })
+
+ local MainTab = Window:CreateTab("home", nil) -- Title, Image
+ local MainSection = MainTab:CreateSection("Home")
+
+ Rayfield:Notify({
+    Title = "Checking key",
+    Content = "Nice",
+    Duration = 6.5,
+    Image = nil,
+    Actions = { -- Notification Buttons
+       Ignore = {
+          Name = "Okay!",
+          Callback = function()
+          print("The user tapped Okay!")
+       end
+    },
+ },
+ })
+
+ local Button = MainTab:CreateButton({
+    Name = "Infinite jump",
+    Callback = function()
+--Toggles the infinite jump between on or off on every script run
+_G.infinjump = not _G.infinjump
+
+if _G.infinJumpStarted == nil then
+	--Ensures this only runs once to save resources
+	_G.infinJumpStarted = true
+	
+	--Notifies readiness
+	game.StarterGui:SetCore("SendNotification", {Title="saiko hub"; Text="infinite jump activated"; Duration=5;})
+
+	--The actual infinite jump
+	local plr = game:GetService('Players').LocalPlayer
+	local m = plr:GetMouse()
+	m.KeyDown:connect(function(k)
+		if _G.infinjump then
+			if k:byte() == 32 then
+			humanoid = game:GetService'Players'.LocalPlayer.Character:FindFirstChildOfClass('Humanoid')
+			humanoid:ChangeState('Jumping')
+			wait()
+			humanoid:ChangeState('Seated')
+			end
+		end
+	end)
+end
+    end,
+ })
+
+ local Slider = MainTab:CreateSlider({
+    Name = "walk speed ",
+    Range = {0, 300},
+    Increment = 1,
+    Suffix = "speed",
+    CurrentValue = 16,
+    Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+    Callback = function(Value)
+            game.Players.LocalPlayer.Character.Humanoid.WalkSpeed = (Value)
+    end,
+ })
+
+ local Dropdown = MainTab:CreateDropdown({
+   Name = "Select area",
+   Options = {"Starter island","pirate 2"},
+   CurrentOption = {"Starter island"},
+   MultipleOptions = false,
+   Flag = "Dropdown1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Option)
+        print(option)
+   end,
+})
+
+local TeleportTab = Window:CreateTab("Teleport Island", nil) -- Title, Image
+local Section = TeleportTab:CreateSection("island balh")
+
+local Button = TeleportTab:CreateButton({
+   Name = "starter island",
+   Callback = function()
+    print (starter)
+   end,
+})
+
+local Button = TeleportTab:CreateButton({
+   Name = "pirate 2",
+   Callback = function()
+     print (pirate)
+   end,
+})
+
+local MiscTab = Window:CreateTab("Misc", nil) -- Title, Image
+local Section = MiscTab:CreateSection("Islands")
+
+local Toggle = MiscTab:CreateToggle({
+   Name = "autofarm test",
+   CurrentValue = false,
+   Flag = "toggle example1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+      print('hello')
+   end,
+})
+
+local Slider = MiscTab:CreateSlider({
+   Name = "jump power",
+   Range = {0, 500},
+   Increment = 1,
+   Suffix = "jump",
+   CurrentValue = 50,
+   Flag = "Slider1", -- A flag is the identifier for the configuration file, make sure every element has a different flag if you're using configuration saving to ensure no overlaps
+   Callback = function(Value)
+       local player = game.Players.LocalPlayer
+       if player and player.Character then
+           local humanoid = player.Character:FindFirstChildOfClass("Humanoid")
+           if humanoid then
+               humanoid.JumpPower = Value
+           end
+       end
+   end,
+})
+
